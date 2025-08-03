@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 import {
-  HomeView,
+  HomePageView,
 } from "../views";
 import { useAuthStore } from "../store";
 
 const routes = [
   // { path: "/", name: "app", component: LandingView },
-  { path: "/home", name: "home", component: HomeView },
+  { path: "/home", name: "home", component: HomePageView },
 ];
 
 /**Initialize here */

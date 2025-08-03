@@ -21,10 +21,10 @@
 
 <script setup>
 import { RouterView } from "vue-router";
-import Header from "./components/Header.vue";
-import Footer from "./components/Footer.vue";
+import Header from "./components/Common/Header.vue";
+import Footer from "./components/Common/Footer.vue";
 import { useAuthStore } from "./store";
-import LoginEmail from "@/components/LoginEmail.vue";
+import LoginEmail from "@/components/Auth/LoginEmail.vue";
 
 /**VARIABLES */
 const auth = useAuthStore();
