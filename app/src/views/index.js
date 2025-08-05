@@ -1,7 +1,8 @@
 import HomePageView from "./HomePageView.vue";
 import AboutPageView from "./AboutPageView.vue";
 import EventsPageView from "./EventsPageView.vue";
-import I3ProgramsPageView from "./I3ProgramsPageView.vue";
+import I3LaunchpadPageView from "./I3LaunchpadPageView.vue";
+import I3KingdomHubPageView from "./I3KingdomHubPageView.vue";
 import BlogPageView from "./BlogPageView.vue";
 import ContactPageView from "./ContactPageView.vue";
 
@@ -9,7 +10,8 @@ export {
   HomePageView,
   AboutPageView,
   EventsPageView,
-  I3ProgramsPageView,
+  I3LaunchpadPageView,
+  I3KingdomHubPageView,
   BlogPageView,
   ContactPageView
 };

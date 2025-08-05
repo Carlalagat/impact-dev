@@ -15,6 +15,7 @@
         </div>
       </div>
     </div>
+    
     <Footer />
   </div>
 </template>
@@ -25,6 +26,7 @@ import Header from "./components/Common/Header.vue";
 import Footer from "./components/Common/Footer.vue";
 import { useAuthStore } from "./store";
 import LoginEmail from "@/components/Auth/LoginEmail.vue";
+
 
 /**VARIABLES */
 const auth = useAuthStore();
