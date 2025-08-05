@@ -2,7 +2,7 @@
   <div
     class="bg-white p-4 rounded-md border border-gray-400 shadow-2xl max-w-7xl"
   >
-    <p class="text-xl text-center p-4">Log in to access your account</p>
+    <p class="text-xl text-center p-4">Admin Login</p>
     <div>
       <form @submit.prevent="onSubmit">
         <p class="p-2 text-lg">E-mail</p>
@@ -42,12 +42,11 @@
         <div class="flex justify-center items-end sticky py-8 bottom-0">
           <button
             class="text-white bg-green-600 px-4 py-2 rounded-md w-full"
-            :style="{
-              opacity: !v$.email.$error && !v$.password.$error ? 1 : 0.5,
-            }"
-            :disabled="!(!v$.email.$error && !v$.password.$error)"
+            type="submit"
+            :disabled="v$.$invalid || loading"
+            :class="{ 'opacity-50 cursor-not-allowed': v$.$invalid || loading }"
           >
-            login
+            {{ loading ? "Logging in..." : "Login" }}
           </button>
         </div>
         <div v-if="error" class="text-red-500">
@@ -62,18 +61,17 @@
 import { computed, onMounted, reactive, ref } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
-import { useAuthStore } from "@/store";
+import { useAuthStore } from "../../store";
+import { storeToRefs } from "pinia";
 
 /**initialise the auth store */
 const authStore = useAuthStore();
 
-/**Get error from auth store */
-const error = computed(() => {
-  return authStore.error;
-});
+// Make store state reactive with storeToRefs
+const { error, loading } = storeToRefs(authStore);
 
 onMounted(() => {
-  //Clear the previous error
+  // Clear any previous error when the component mounts
   authStore.error = null;
 });
 
@@ -86,7 +84,7 @@ const formData = reactive({
 const validations = computed(() => {
   return {
     email: { required, email },
-    password: { required, minLength: minLength(3) },
+    password: { required, minLength: minLength(6) },
   };
 });
 
@@ -94,27 +92,12 @@ const validations = computed(() => {
 const v$ = useVuelidate(validations, formData);
 
 /**Submit form */
+/** Submit form */
 const onSubmit = async () => {
-  const result = await v$.value.$validate();
-  console.log(formData);
+  const isFormCorrect = await v$.value.$validate();
+  if (!isFormCorrect) return;
 
-  if (result) {
-    console.log("Form submitted");
-    return authStore.login(formData);
-  } else {
-    console.log("Form not submitted");
-  }
-};
-
-const onSubmitDemo = async () => {
-  v$.value.$validate();
-  if (v$.value.$error) return;
-
-  try {
-    await authStore.login(formData);
-  } catch (error) {
-    if (error.response && error.response.data) {
-    }
-  }
+  // Call the refactored login action from the store
+  await authStore.login(formData);
 };
 </script>

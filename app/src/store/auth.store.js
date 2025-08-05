@@ -1,108 +1,103 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { useLocalStorage } from "@vueuse/core";
-import { fetchWrapper } from "../helpers";
-import { post, get } from "../providers/api/main";
 import router from "../router";
-
-const baseUrl = `${import.meta.env.VITE_API_URL}`;
-const mode = `${import.meta.env.VITE_MODE}`;
+import { supabase } from "../supabase/supabaseClient";
 
 export const useAuthStore = defineStore("auth", () => {
-  const user = ref(useLocalStorage("user", null));
-  const access_token = ref(useLocalStorage("x-token", null));
-  const returnUrl = ref(null);
+  const user = ref(null);
+  const access_token = ref(null);
   const error = ref(null);
+  const loading = ref(false);
   const isLoginModalOpen = ref(false);
-  let login;
 
-  /**Login method for local instance */
-  async function login_local(formData) {
-    const username = formData.email;
-    const password = formData.password;
-    console.log("This is the formData in store", { username, password });
-    const fetchedUser = await fetchWrapper
-      .post(`${baseUrl}/login`, {
-        username,
-        password,
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log(err.response);
-        error.value = err.response ? err.response.data.message : err.message;
-      });
+  /**
+   * Login function using Supabase email/password auth
+   * - Attempts to sign in the user
+   * - On success, saves user and token
+   * - On failure, sets error message
+   */
+  async function login(credentials) {
+    try {
+      loading.value = true;
+      error.value = null;
 
-    console.log(fetchedUser);
+      // Attempt login with Supabase
+      const { data, error: supabaseError } =
+        await supabase.auth.signInWithPassword({
+          email: credentials.email,
+          password: credentials.password,
+        });
 
-    /**update pinia state */
-    user.value = JSON.stringify(fetchedUser);
+      // If Supabase returned an error, throw it
+      if (supabaseError) {
+        throw supabaseError;
+      }
 
-    /**capture the access token*/
-    access_token.value = fetchedUser.token ? fetchedUser.token : null;
+      // Login successful - store user + token
+      user.value = data.session.user;
+      access_token.value = data.session.access_token;
 
-    /**Close Login Modal */
-    isLoginModalOpen.value = false;
+      // Close login modal (if used)
+      isLoginModalOpen.value = false;
 
-    /**redirect to previous url or default to home page */
-    router.push(returnUrl.value || "/");
+      // Redirect to admin dashboard
+      router.push("/dashboard");
+    } catch (err) {
+      // Handle errors
+      console.error("Login failed:", err);
+      error.value = err.message || "An unknown error occurred.";
+    } finally {
+      loading.value = false;
+    }
   }
 
-  /**Login method for remote instance */
-  async function login_remote(credentials) {
-    const response = await post("login", credentials)
-      .then((response) => {
-        console.log(response);
-        user.value = response.data.user
-          ? JSON.stringify(response.data.user)
-          : null;
+  /**
+   * Logout function
+   * - Clears session from Supabase
+   * - Clears local state
+   * - Redirects to home page
+   */
+  async function logout() {
+    loading.value = true;
+    error.value = null;
 
-        /**capture the access token*/
-        access_token.value = response.data ? response.data.token : null;
+    // Supabase sign out
+    await supabase.auth.signOut();
 
-        /**Close Login Modal */
-        isLoginModalOpen.value = false;
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log(err.response);
-        error.value = err.response ? err.response.data.message : err.message;
-      });
-
-    /**redirect to previous url or default to home page */
-    router.push(returnUrl.value || "/");
-  }
-
-  /** Test API */
-  async function test() {
-    await get("shops")
-      .then((response) => {
-        console.log(response);
-        // //Logout if forbidden
-        // if(response.data.responseStatus === 403){
-        //   logout();
-        // }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  /**Logout here */
-  function logout() {
+    // Clear local state
     user.value = null;
     access_token.value = null;
-    /**Open login modal */
-    isLoginModalOpen.value = true;
-    /**Navigate to landing page */
+    loading.value = false;
+
+    // Navigate back to home
     router.push("/");
   }
 
-  /**Identify the login method */
-  if (mode == "local") {
-    login = login_local;
-  } else if (mode == "remote") {
-    login = login_remote;
+  /**
+   * Check user session on app startup
+   * - Useful for keeping user logged in on page refresh
+   * - Gets session from Supabase client
+   */
+  async function checkUserSession() {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (session) {
+      user.value = session.user;
+      access_token.value = session.access_token;
+    }
   }
 
-  return { user, returnUrl, error, isLoginModalOpen, test, login, logout };
+  // Return the state and actions so they can be used in components
+  return {
+    user,
+    access_token,
+    error,
+    loading,
+    isLoginModalOpen,
+    login,
+    logout,
+    checkUserSession,
+  };
 });

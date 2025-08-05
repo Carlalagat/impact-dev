@@ -4,6 +4,7 @@ import EventsPageView from "./EventsPageView.vue";
 import I3ProgramsPageView from "./I3ProgramsPageView.vue";
 import BlogPageView from "./BlogPageView.vue";
 import ContactPageView from "./ContactPageView.vue";
+import DashboardView from "./DashboardView.vue";
 
 export {
   HomePageView,
@@ -11,5 +12,6 @@ export {
   EventsPageView,
   I3ProgramsPageView,
   BlogPageView,
-  ContactPageView
+  ContactPageView,
+  DashboardView
 };
