@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { HomePageView, DashboardView } from "../views";
+import { HomePageView, AdminView } from "../views";
 import { useAuthStore } from "../store";
 
 const routes = [
   { path: "/", name: "home", component: HomePageView },
   {
-    path: "/dashboard",
-    name: "app",
-    component: DashboardView,
+    path: "/admin",
+    name: "admin",
+    component: AdminView,
     meta: { requiresAuth: true },
   },
 ];
