@@ -86,9 +86,10 @@ onUnmounted(() => {
 
 <style scoped>
 .Header {
+  font-family:'Roboto', sans-serif;
   display: flex;
   justify-content: space-between;
-  padding: 0px 80px;
+  padding: 0px 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.1);
   position: relative;
 }
@@ -100,7 +101,7 @@ onUnmounted(() => {
 .desktop-nav {
   display: flex;
   list-style: none;
-  gap: 60px;
+  gap: 40px;
   vertical-align: middle;
   padding-top: 20px;
 }
