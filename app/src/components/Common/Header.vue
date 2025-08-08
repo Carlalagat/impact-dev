@@ -9,7 +9,7 @@
         <li><router-link :to="{ name: 'about' }">About</router-link></li>
         <li><router-link :to="{ name: 'events' }">Events</router-link></li>
         <li class="dropdown">
-          <router-link :to="{ name: 'home' }">Consultancy</router-link>
+          <router-link :to="{ name: 'home' }">I3 Programs</router-link>
           <div class="dropdown-content">
             <router-link :to="{ name: 'i3launchpad' }">I3 LaunchPad</router-link>
             <router-link :to="{ name: 'i3kingdomhub' }">I3 KingdomHub</router-link>

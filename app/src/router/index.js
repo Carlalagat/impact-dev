@@ -8,7 +8,7 @@ import {
   I3KingdomHubPageView,
   BlogPageView,
   ContactPageView,
-  DashboardView
+  AdminView
 } from "../views";
 import { useAuthStore } from "../store";
 
@@ -22,7 +22,7 @@ const routes = [
   { path: "/i3kingdomhub", name:"i3kingdomhub", component: I3KingdomHubPageView },
   { path: "/blog", name:"blog", component: BlogPageView },
   { path: "/contact", name:"contact", component: ContactPageView },
-  { path: "/dashboard", name: "app", component: DashboardView, meta: { requiresAuth: true },},
+  // { path: "/dashboard", name: "app", component: AdminView, meta: { requiresAuth: true },},
 ];
 
 /**Initialize here */
