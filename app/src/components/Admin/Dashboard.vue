@@ -34,7 +34,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { useAuthStore } from "../store";
+import { useAuthStore } from "../../store";
 import axios from "axios";
 import { storeToRefs } from "pinia";
 

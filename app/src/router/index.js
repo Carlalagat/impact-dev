@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+
 import {
   HomePageView,
   AboutPageView,
@@ -14,6 +15,7 @@ import { useAuthStore } from "../store";
 const routes = [
   // { path: "/", name: "app", component: LandingView },
   { path: "/", name: "home", component: HomePageView },
+  {path: "/admin", name: "admin", component: AdminView, meta: { requiresAuth: true },},
   { path: "/about", name:"about", component: AboutPageView },
   { path: "/events", name:"events", component: EventsPageView },
   { path: "/i3launchpad", name:"i3launchpad", component: I3LaunchpadPageView },

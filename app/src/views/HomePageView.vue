@@ -19,7 +19,8 @@ import { useRouter } from "vue-router";
 import HomeHero from "@/components/HomePage/HomeHero.vue";
 const router = useRouter();
 
-const goToDashboard = () => {
-  router.push("/dashboard");
-};
 </script>
+
+<style lang="scss" scoped>
+
+</style>
