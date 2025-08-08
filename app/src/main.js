@@ -8,10 +8,6 @@ import { Cloudinary } from '@cloudinary/url-gen'
 // import "./style.css";
 import "./assets/tailwind.css"; //tailwind
 
-/**setup fake backend */
-import { fakeBackend } from "./helpers";
-fakeBackend();
-
 const app = createApp(App);
 const pinia = createPinia();
 const cld = new Cloudinary({
@@ -21,5 +17,9 @@ const cld = new Cloudinary({
 });
 app.provide('cloudinary', cld);
 app.use(pinia);
-app.use(router);
-app.mount("#app");
+
+const authStore = useAuthStore();
+authStore.checkUserSession().then(() => {
+  app.use(router);
+  app.mount("#app");
+});

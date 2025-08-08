@@ -24,18 +24,26 @@ const routes = [
 /**Initialize here */
 const router = createRouter({ history: createWebHistory(), routes });
 
-router.beforeEach(async (to, from) => {
-  // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ["/", "/login"];
-  const authRequired = !publicPages.includes(to.path);
-  const auth = useAuthStore();
+// Navigation Guard for Modal-based Login
+router.beforeEach((to, from, next) => {
+  // Get the auth store
+  const authStore = useAuthStore();
 
-  /**add function to check if user is logged in */
-  if (authRequired && !auth.user) {
-    auth.returnUrl = to.fullPath;
-    auth.isLoginModalOpen = true;
-    return from.fullPath;
-    // return "/login";
+  // Check if the user is authenticated from the store's state
+  const isAuthenticated = !!authStore.access_token;
+
+  // Check if the route requires authentication
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+
+  if (requiresAuth && !isAuthenticated) {
+    // If the route is protected and the user is not logged in:
+    // 1. Open the login modal
+    authStore.isLoginModalOpen = true;
+    // 2. Cancel the navigation to the protected route
+    next(false);
+  } else {
+    // Otherwise, allow navigation to proceed
+    next();
   }
 });
 
