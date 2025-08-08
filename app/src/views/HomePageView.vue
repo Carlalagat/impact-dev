@@ -10,11 +10,13 @@
     >
       Go to Dashboard
     </button>
+    <HomeHero />
   </div>
 </template>
 
 <script setup>
 import { useRouter } from "vue-router";
+import HomeHero from "@/components/HomePage/HomeHero.vue";
 const router = useRouter();
 
 const goToDashboard = () => {

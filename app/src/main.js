@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import router from "./router";
 import App from "./App.vue";
+import { useAuthStore } from "./store";
 import { Cloudinary } from '@cloudinary/url-gen'
 
 /**styling */
