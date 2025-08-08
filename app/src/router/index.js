@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+
 import {
   HomePageView,
   AboutPageView,
@@ -7,18 +8,20 @@ import {
   I3KingdomHubPageView,
   BlogPageView,
   ContactPageView
-} from "../views";
+} from "../views
 import { useAuthStore } from "../store";
 
 const routes = [
   // { path: "/", name: "app", component: LandingView },
   { path: "/", name: "home", component: HomePageView },
+  {path: "/admin", name: "admin", component: AdminView, meta: { requiresAuth: true },},
   { path: "/about", name:"about", component: AboutPageView },
   { path: "/events", name:"events", component: EventsPageView },
   { path: "/i3launchpad", name:"i3launchpad", component: I3LaunchpadPageView },
   { path: "/i3kingdomhub", name:"i3kingdomhub", component: I3KingdomHubPageView },
   { path: "/blog", name:"blog", component: BlogPageView },
   { path: "/contact", name:"contact", component: ContactPageView },
+
 ];
 
 /**Initialize here */

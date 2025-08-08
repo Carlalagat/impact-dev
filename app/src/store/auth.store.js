@@ -41,7 +41,7 @@ export const useAuthStore = defineStore("auth", () => {
       isLoginModalOpen.value = false;
 
       // Redirect to admin dashboard
-      router.push("/dashboard");
+      router.push("/admin");
     } catch (err) {
       // Handle errors
       console.error("Login failed:", err);
@@ -69,7 +69,7 @@ export const useAuthStore = defineStore("auth", () => {
     access_token.value = null;
     loading.value = false;
 
-    // Navigate back to home
+    // Navigate back to login page
     router.push("/");
   }
 
