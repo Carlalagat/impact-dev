@@ -47,13 +47,13 @@
          <h3 class="footer-title">Follow Us</h3>
          <div class="social-links">
            <a href="https://www.linkedin.com/company/impact360%E2%80%A2/" target="_blank" rel="noopener noreferrer" class="social-link linkedin">
-             <font-awesome-icon icon="fab fa-linkedin-in" />
+              <AdvancedImage :cldImg="linkedIn" class="custom-style" />
            </a>
            <a href="https://www.instagram.com/impac_t360/?hl=en" target="_blank" rel="noopener noreferrer" class="social-link instagram">
-             <font-awesome-icon icon="fab fa-instagram" />
+             <AdvancedImage :cldImg="instagram" class="custom-style" />
            </a>
            <a href="https://www.tiktok.com/@impact360_" target="_blank" rel="noopener noreferrer" class="social-link tiktok">
-             <font-awesome-icon icon="fab fa-tiktok" />
+             <AdvancedImage :cldImg="tiktok" class="custom-style" />
            </a>
          </div>
          <div class="newsletter">
@@ -90,7 +90,9 @@ import { fill } from '@cloudinary/url-gen/actions/resize';
 
 const cld = inject('cloudinary');
 const image = cld.image('logo_p5lufs').resize(fill().width(120).height(96));
-
+const linkedIn = cld.image('113a74c6-5efa-47be-a20a-785ceea1959e').resize(fill().width(120).height(96));
+const instagram = cld.image('755d613a-5c4e-4b03-b1c1-5ce16efc9f9a').resize(fill().width(120).height(96));
+const tiktok = cld.image('1f545f31-bdb2-4ae0-a181-5e5635bbc33f').resize(fill().width(130).height(96));
 const currentYear = computed(() => new Date().getFullYear());
 </script>
 
@@ -243,7 +245,7 @@ const currentYear = computed(() => new Date().getFullYear());
 }
 
 .social-link.tiktok {
- background: linear-gradient(135deg, #000000, #ff0050);
+ background: linear-gradient(135deg,#ff0050,  #000000);
 }
 
 .social-link:hover {

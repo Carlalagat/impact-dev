@@ -1,5 +1,8 @@
 <template>
-  <div class="p-8 text-center">
+  <div>
+      <HomeHero />
+  </div>
+  <!-- <div class="p-8 text-center">
     <h1 class="text-3xl font-bold mb-4">Welcome to the Admin Portal</h1>
     <p class="mb-6">
       This is the public home page. Please log in to access the dashboard.
@@ -9,9 +12,9 @@
       @click="goToDashboard"
     >
       Go to Dashboard
-    </button>
-    <HomeHero />
-  </div>
+    </button> -->
+    
+  
 </template>
 
 <script setup>

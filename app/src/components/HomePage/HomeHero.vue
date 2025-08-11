@@ -1,7 +1,7 @@
 <template>
     <div>
       <!-- <AdvancedImage :cldImg="image" class="custom-style" /> -->
-      <h1>Hello World</h1>
+      
     </div>
 </template>
 
