@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cloudinary/url-gen": "^1.21.0",
+    "@cloudinary/vue": "^1.13.3",
     "@supabase/supabase-js": "^2.53.0",
     "@tailwindcss/postcss": "^4.1.11",
     "@vuelidate/core": "^2.0.3",
