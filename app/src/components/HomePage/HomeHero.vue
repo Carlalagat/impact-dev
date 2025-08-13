@@ -44,6 +44,7 @@
         </svg>
       </div>
     </footer>
+    <EventPopup :show="showEventPopup" @close="closePopup" />
   </section>
 </template>
 
@@ -51,6 +52,7 @@
 import { inject, ref, onMounted, onUnmounted } from 'vue';
 import { AdvancedImage } from '@cloudinary/vue';
 import { fill } from '@cloudinary/url-gen/actions/resize';
+import EventPopup from './EventPopup.vue'; 
 
 const cld = inject('cloudinary');
 const image = cld.image('logo_p5lufs').resize(fill().width(200).height(200));
@@ -60,6 +62,24 @@ const stats = ref([
   { value: '45+', label: 'Startups Launched' },
   { value: '12+', label: 'Countries Reached' },
 ]);
+
+// 1. Create a reactive variable to control the popup's visibility
+const showEventPopup = ref(false); // Set to `false` initially
+
+// 2. Create functions to open and close the popup
+const openPopup = () => {
+  showEventPopup.value = true;
+};
+
+const closePopup = () => {
+  showEventPopup.value = false;
+};
+// Optional: Show the popup automatically after a delay when the page loads
+onMounted(() => {
+  setTimeout(() => {
+    openPopup();
+  }, 2000); // Show popup after 2 seconds
+});
 </script>
 
 <style scoped>
