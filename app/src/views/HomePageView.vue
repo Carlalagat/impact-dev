@@ -1,6 +1,7 @@
 <template>
   <div>
       <HomeHero />
+      <HomeOverview />
   </div>
   <!-- <div class="p-8 text-center">
     <h1 class="text-3xl font-bold mb-4">Welcome to the Admin Portal</h1>
@@ -20,6 +21,7 @@
 <script setup>
 import { useRouter } from "vue-router";
 import HomeHero from "@/components/HomePage/HomeHero.vue";
+import HomeOverview from "@/components/HomePage/HomeOverview.vue";
 const router = useRouter();
 
 </script>
