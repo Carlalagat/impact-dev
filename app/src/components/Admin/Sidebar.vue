@@ -10,7 +10,7 @@
     >
       <!-- Logo + Close -->
       <div class="p-4 border-b flex items-center justify-between">
-        <h1 class="text-xl font-bold tracking-wide">Admin</h1>
+        <h1 class="text-xl font-bold tracking-wide text-blue-600">Admin</h1>
         <button
           @click="sidebarOpen = false"
           class="md:hidden p-2 text-gray-500 hover:text-gray-800"
@@ -20,43 +20,44 @@
       </div>
 
       <!-- Navigation -->
-      <nav class="p-4 space-y-1">
-        <router-link
-          to="/admin"
-          class="block px-3 py-2 rounded hover:bg-gray-200 transition"
-        >
-          Dashboard
+      <nav class="p-4 space-y-2">
+        <router-link to="/admin" class="nav-link" active-class="active-link">
+          <span>📊</span> Dashboard
         </router-link>
 
         <router-link
           v-if="hasRole(['SUPERADMIN', 'STAFF'])"
           to="/admin/events"
-          class="block px-3 py-2 rounded hover:bg-gray-200 transition"
+          class="nav-link"
+          active-class="active-link"
         >
-          Events
+          <span>🎟️</span> Events
         </router-link>
 
         <router-link
           v-if="hasRole(['SUPERADMIN'])"
           to="/admin/partners"
-          class="block px-3 py-2 rounded hover:bg-gray-200 transition"
+          class="nav-link"
+          active-class="active-link"
         >
-          Partners
+          <span>🤝</span> Partners
         </router-link>
 
         <router-link
           v-if="hasRole(['SUPERADMIN'])"
           to="/admin/staff"
-          class="block px-3 py-2 rounded hover:bg-gray-200 transition"
+          class="nav-link"
+          active-class="active-link"
         >
-          Staff Management
+          <span>🧑‍💼</span> Staff Management
         </router-link>
 
         <router-link
           to="/admin/settings"
-          class="block px-3 py-2 rounded hover:bg-gray-200 transition"
+          class="nav-link"
+          active-class="active-link"
         >
-          Settings
+          <span>⚙️</span> Settings
         </router-link>
       </nav>
     </aside>
@@ -96,7 +97,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { useAuthStore } from "../../store";
 import { storeToRefs } from "pinia";
 
@@ -104,13 +105,36 @@ const sidebarOpen = ref(false);
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
 
-/** Returns true if user role matches any in the array */
+/** Check if current user role matches allowed roles */
 function hasRole(roles) {
   const userRole = user.value?.role;
   return userRole && roles.includes(userRole);
 }
 
+/** Log user out */
 function logout() {
   authStore.logout();
 }
 </script>
+
+<style scoped>
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.375rem;
+  color: #374151;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  background-color: #f3f4f6;
+}
+
+.active-link {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  font-weight: 600;
+}
+</style>
