@@ -9,7 +9,7 @@
         <li><router-link :to="{ name: 'about' }">About</router-link></li>
         <li><router-link :to="{ name: 'events' }">Events</router-link></li>
         <li class="dropdown">
-          <router-link :to="{ name: 'home' }">Consultancy</router-link>
+          <router-link :to="{ name: 'home' }">I3 Programs</router-link>
           <div class="dropdown-content">
             <router-link :to="{ name: 'i3launchpad' }">I3 LaunchPad</router-link>
             <router-link :to="{ name: 'i3kingdomhub' }">I3 KingdomHub</router-link>
@@ -75,24 +75,33 @@ const handleResize = () => {
 };
 
 onMounted(() => {
-  window.addEventListener('resize', handleResize);
+  window.addEventListener('scroll', handleResize);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', handleResize);
+  window.removeEventListener('scroll', handleResize);
   document.body.style.overflow = 'auto';
 });
 </script>
 
 <style scoped>
 .Header {
+  width:100%;
+  font-family:'Poppins', sans-serif;
   display: flex;
   justify-content: space-between;
-  padding: 0px 80px;
+  padding: 0px 160px;
+  background-color:transparent;
+  z-index: 1000;
+  transition: background-color 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.1);
-  position: relative;
+  position: fixed;
 }
-
+.main-header.scrolled {
+  background-color: rgba(10, 25, 47, 0.85); /* Dark, semi-transparent background on scroll */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
 .nav {
   position: relative;
 }
@@ -100,11 +109,14 @@ onUnmounted(() => {
 .desktop-nav {
   display: flex;
   list-style: none;
-  gap: 60px;
+  gap: 40px;
   vertical-align: middle;
   padding-top: 20px;
 }
-
+.desktop-nav li{
+  font-weight: 500;
+ color:white;
+}
 .desktop-nav li:hover {
   color: #1d4ed8;
   cursor: pointer;
@@ -118,12 +130,12 @@ onUnmounted(() => {
   display: none;
   position: absolute;
   top: 100%;
-  left: 50%;
+  left: 80%;
   transform: translateX(-50%);
   background-color: white;
   min-width: 200px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
+  border-radius: 8px;
   z-index: 10;
 }
 

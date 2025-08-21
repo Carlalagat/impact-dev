@@ -4,9 +4,6 @@ import { useLocalStorage } from "@vueuse/core";
 /**Import API URL from .env */
 const ROOT_URL = `${import.meta.env.VITE_API_URL}`;
 
-/**Capture the access token from local storage */
-const access_token = useLocalStorage("x-token", null);
-
 /**Create an axios instance */
 const axiosInstance = axios.create({
   baseURL: ROOT_URL,
@@ -15,19 +12,20 @@ const axiosInstance = axios.create({
 /**Create a request interceptor */
 axiosInstance.interceptors.request.use(
   (config) => {
-    /** Add token to header if exists */
-    if (access_token) {
-      config.headers["Authorization"] = `Bearer ${access_token.value}`;
+    const token = localStorage.getItem("x-token");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+      console.log("Interceptor: Sending request with token.");
+    } else {
+      console.log("Interceptor: Sending request without token.");
     }
 
     return config;
   },
   (error) => {
-    /**Do something with request error */
     return Promise.reject(error);
   }
 );
-
 /** Handle Forbidden and Unauthorized errors */
 axiosInstance.interceptors.response.use(
   (response) => {

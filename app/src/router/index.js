@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-
 import {
   HomePageView,
   AboutPageView,
@@ -8,47 +7,93 @@ import {
   I3KingdomHubPageView,
   BlogPageView,
   ContactPageView,
-  DashboardView
+  DashboardView,
+  EventsView,
+  PartnersView,
+  SettingsView,
+  SidebarView,
+  ManagmentView,
 } from "../views";
 import { useAuthStore } from "../store";
 
 const routes = [
-  // { path: "/", name: "app", component: LandingView },
   { path: "/", name: "home", component: HomePageView },
-  {path: "/admin", name: "admin", component: AdminView, meta: { requiresAuth: true },},
-  { path: "/about", name:"about", component: AboutPageView },
-  { path: "/events", name:"events", component: EventsPageView },
-  { path: "/i3launchpad", name:"i3launchpad", component: I3LaunchpadPageView },
-  { path: "/i3kingdomhub", name:"i3kingdomhub", component: I3KingdomHubPageView },
-  { path: "/blog", name:"blog", component: BlogPageView },
-  { path: "/contact", name:"contact", component: ContactPageView },
-  { path: "/dashboard", name: "app", component: DashboardView, meta: { requiresAuth: true },},
+  {
+    path: "/admin",
+    component: SidebarView,
+    meta: { requiresAuth: true },
+    children: [
+      { path: "", name: "admin.dashboard", component: DashboardView },
+      {
+        path: "events",
+        name: "admin.events",
+        meta: { requiresAuth: true, roles: ["SUPERADMIN", "STAFF"] },
+        component: EventsView,
+      },
+      {
+        path: "partners",
+        name: "admin.partners",
+        meta: { requiresAuth: true, roles: ["SUPERADMIN"] },
+        component: PartnersView,
+      },
+      {
+        path: "settings",
+        name: "admin.settings",
+        meta: { requiresAuth: true, roles: ["SUPERADMIN", "STAFF"] },
+        component: SettingsView,
+      },
+      {
+        path: "/admin/staff",
+        name: "admin.staff",
+        meta: { requiresAuth: true, roles: ["SUPERADMIN"] },
+        component: ManagmentView,
+      },
+    ],
+  },
+  { path: "/about", name: "about", component: AboutPageView },
+  { path: "/events", name: "events", component: EventsPageView },
+  { path: "/i3launchpad", name: "i3launchpad", component: I3LaunchpadPageView },
+  {
+    path: "/i3kingdomhub",
+    name: "i3kingdomhub",
+    component: I3KingdomHubPageView,
+  },
+  { path: "/blog", name: "blog", component: BlogPageView },
+  { path: "/contact", name: "contact", component: ContactPageView },
 ];
 
-/**Initialize here */
-const router = createRouter({ history: createWebHistory(), routes });
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+});
 
-// Navigation Guard for Modal-based Login
-router.beforeEach((to, from, next) => {
-  // Get the auth store
+router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore();
 
-  // Check if the user is authenticated from the store's state
-  const isAuthenticated = !!authStore.access_token;
+  // Ensure session is loaded before checking
+  if (!authStore.sessionChecked) {
+    await authStore.checkUserSession();
+    authStore.sessionChecked = true;
+  }
 
-  // Check if the route requires authentication
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const allowedRoles = to.meta.roles;
+  const isAuthenticated = !!authStore.user;
 
   if (requiresAuth && !isAuthenticated) {
-    // If the route is protected and the user is not logged in:
-    // 1. Open the login modal
+    // Not logged in, show login modal
     authStore.isLoginModalOpen = true;
-    // 2. Cancel the navigation to the protected route
-    next(false);
-  } else {
-    // Otherwise, allow navigation to proceed
-    next();
+    return next(false);
   }
+
+  if (allowedRoles && authStore.user) {
+    const userRole = authStore.user.role;
+    if (!allowedRoles.includes(userRole)) {
+      return next("/admin");
+    }
+  }
+
+  next();
 });
 
 export default router;
