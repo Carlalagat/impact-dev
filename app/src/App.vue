@@ -1,9 +1,9 @@
 <template>
   <div class="min-h-screen bg-white">
-    <Header />
+    <Header v-if="!isAdminRoute" />
     <div class="mt-4">
       <RouterView />
-      <!-- LOGIN MODAL -->      
+      <!-- LOGIN MODAL -->
       <div
         v-if="auth.isLoginModalOpen"
         class="modal-overlay"
@@ -15,26 +15,31 @@
         </div>
       </div>
     </div>
-    
-    <Footer />
+
+    <Footer v-if="!isAdminRoute" />
   </div>
 </template>
 
 <script setup>
-import { RouterView } from "vue-router";
+import { computed } from "vue";
+import { useRoute, RouterView } from "vue-router";
 import Header from "./components/Common/Header.vue";
 import Footer from "./components/Common/Footer.vue";
 import { useAuthStore } from "./store";
 import LoginEmail from "@/components/Auth/LoginEmail.vue";
 
-
 /**VARIABLES */
 const auth = useAuthStore();
+const route = useRoute();
 
 /**FUNCTIONS*/
 const closeModal = () => {
   auth.isLoginModalOpen = false;
 };
+
+const isAdminRoute = computed(() => {
+  return route.path.startsWith("/admin");
+});
 </script>
 
 <style scoped>
