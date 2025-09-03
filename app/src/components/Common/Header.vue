@@ -114,8 +114,9 @@ onUnmounted(() => {
   padding-top: 20px;
 }
 .desktop-nav li{
-  font-weight: 500;
- color:white;
+  font-weight: 600;
+ color:black;
+ 
 }
 .desktop-nav li:hover {
   color: #1d4ed8;

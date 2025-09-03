@@ -53,7 +53,7 @@
              <AdvancedImage :cldImg="instagram" class="custom-style" />
            </a>
            <a href="https://www.tiktok.com/@impact360_" target="_blank" rel="noopener noreferrer" class="social-link tiktok">
-             <AdvancedImage :cldImg="tiktok" class="custom-style" />
+             <AdvancedImage :cldImg="tiktok" class="tiktok-logo" />
            </a>
          </div>
          <div class="newsletter">
@@ -92,7 +92,7 @@ const cld = inject('cloudinary');
 const image = cld.image('logo_p5lufs').resize(fill().width(120).height(96));
 const linkedIn = cld.image('113a74c6-5efa-47be-a20a-785ceea1959e').resize(fill().width(120).height(96));
 const instagram = cld.image('755d613a-5c4e-4b03-b1c1-5ce16efc9f9a').resize(fill().width(120).height(96));
-const tiktok = cld.image('1f545f31-bdb2-4ae0-a181-5e5635bbc33f').resize(fill().width(130).height(96));
+const tiktok = cld.image('1f545f31-bdb2-4ae0-a181-5e5635bbc33f').resize(fill().width(120).height(120));
 const currentYear = computed(() => new Date().getFullYear());
 </script>
 
@@ -245,7 +245,10 @@ const currentYear = computed(() => new Date().getFullYear());
 }
 
 .social-link.tiktok {
- background: linear-gradient(135deg,#ff0050,  #000000);
+ /* background: linear-gradient(135deg,#ffffff ,  #ffffff); */
+}
+.tiktok-logo {
+  border-radius: 20px;
 }
 
 .social-link:hover {
