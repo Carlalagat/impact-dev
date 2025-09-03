@@ -74,7 +74,7 @@
 <script setup>
 /** Live dashboard pulling from Nest endpoints */
 import { ref, onMounted, watch, onBeforeUnmount } from "vue";
-import Chart from "chart.js/auto";
+// import Chart from "chart.js/auto";
 import axiosInstance from "../../providers/api/axios";
 
 /** cards + kpis */
